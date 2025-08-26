@@ -1,0 +1,15 @@
+services:
+  db:
+    container_name: 'book-db'
+    image: postgres
+    volumes:
+      - storage_db:/var/lib/postgres/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123lkj3
+      POSTGRES_DB: bookdb
+
+volumes:
+  storage_db:
