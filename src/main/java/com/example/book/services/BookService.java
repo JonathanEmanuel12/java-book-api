@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.book.services;
 
 import java.util.Optional;
 
@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.models.Book;
-import com.example.demo.repositories.BookRepository;
+import com.example.book.models.Book;
+import com.example.book.repositories.BookRepository;
 
 @Service
 public class BookService {

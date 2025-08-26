@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.book.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.models.Book;
-import com.example.demo.services.BookService;
+import com.example.book.models.Book;
+import com.example.book.services.BookService;
 
 @RestController
 @RequestMapping("/books")
