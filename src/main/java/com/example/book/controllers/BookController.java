@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.book.dtos.CreateBookDto;
+import com.example.book.dtos.ResponseBookDto;
 import com.example.book.models.Book;
 import com.example.book.services.BookService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/books")
@@ -28,25 +31,12 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // Criar livro
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.save(book));
+    public ResponseEntity<Book> createBook(@RequestBody @Valid CreateBookDto bookDto) {
+        return ResponseEntity.ok(bookService.save(bookDto));
     }
 
-    // Listar todos
-    @GetMapping
-    public ResponseEntity<Page<Book>> getAllBooks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy
-    ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(bookService.findAll(pageable));
-    }
-
-    // Listar todos com search
-    @GetMapping("/index/search")
+    @GetMapping()
     public ResponseEntity<Page<Book>> getAllBooksWithSearch(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
@@ -60,24 +50,24 @@ public class BookController {
 
     // Buscar por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+    public ResponseEntity<ResponseBookDto> getBookById(@PathVariable Long id) {
         return bookService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Atualizar
-    @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book updatedBook) {
-        return bookService.findById(id)
-                .map(book -> {
-                    book.setTitle(updatedBook.getTitle());
-                    book.setAuthor(updatedBook.getAuthor());
-                    book.setPublisher(updatedBook.getPublisher());
-                    return ResponseEntity.ok(bookService.save(book));
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
+    // // Atualizar
+    // @PutMapping("/{id}")
+    // public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book updatedBook) {
+    //     return bookService.findById(id)
+    //             .map(book -> {
+    //                 book.setTitle(updatedBook.getTitle());
+    //                 book.setAuthor(updatedBook.getAuthor());
+    //                 book.setPublisher(updatedBook.getPublisher());
+    //                 return ResponseEntity.ok(bookService.save(book));
+    //             })
+    //             .orElse(ResponseEntity.notFound().build());
+    // }
 
     // Deletar
     @DeleteMapping("/{id}")
