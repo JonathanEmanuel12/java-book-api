@@ -31,6 +31,10 @@ public class User implements UserDetails{
     @Column(nullable=false)
     private String password;
 
+    public User() {
+        // Construtor padrão necessário para JPA
+    }
+
     public User(String email, String password, String name) {
         this.email = email;
         this.password = password;
@@ -78,5 +82,25 @@ public class User implements UserDetails{
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
